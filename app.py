@@ -2,7 +2,6 @@
 import streamlit as st
 import pandas as pd
 import os
-import matplotlib.pyplot as plt
 
 #backgrund colour 
 with open("style.css") as f:
@@ -75,14 +74,3 @@ elif menu == "View Transactions":
     st.dataframe(df)
 
 # Category Report
-elif menu == "Category Report":
-    st.subheader("📉 Expense Category Report")
-    df = load_data()
-    expense_df = df[df["type"] == "Expense"]
-    if not expense_df.empty:
-        category_data = expense_df.groupby("category")["amount"].sum()
-        fig, ax = plt.subplots()
-        ax.pie(category_data, labels=category_data.index, autopct="%1.1f%%")
-        st.pyplot(fig)
-    else:
-        st.info("No expense data available to show pie chart.")
