@@ -74,3 +74,20 @@ elif menu == "View Transactions":
     st.dataframe(df)
 
 # Category Report
+# Category Report
+elif menu == "Category Report":
+    st.subheader("📉 Expense Category Report")
+    df = load_data()
+    expense_df = df[df["type"] == "Expense"]
+    if not expense_df.empty:
+        category_data = expense_df.groupby("category")["amount"].sum()
+        category_data.plot.pie(
+            autopct="%1.1f%%",
+            figsize=(6, 6),
+            ylabel="",  # Hide y-axis label
+            title="Expenses by Category"
+        )
+        st.pyplot()  # Call without passing `fig`, as pandas handles it
+    else:
+        st.info("No expense data available to show pie chart.")
+
