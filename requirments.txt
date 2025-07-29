@@ -1,10 +1,6 @@
 streamlit
 os
 pandas
-numpy
+date 
+plotly
 
-streamlit
-os
-pandas
-numpy
-matplotlib.pyplot
