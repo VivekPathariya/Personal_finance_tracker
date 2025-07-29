@@ -1,4 +1,13 @@
 /* Background color */
 .stApp {
-    background-color:#E6E6FA;
+    background-color:#FFF0F5;
+    font-family:'Segoe UI',sans-serif;
+}
+h1,h2,h3 {
+    color: #333;
+}
+
+.stButton>button{
+    background-color: #4CAF50;
+    color: white;
 }
