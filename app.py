@@ -1,12 +1,10 @@
-# import library
-
+# library
 import streamlit as st
 import pandas as pd
 import os
-import plotly.express as px
 from datetime import datetime, timedelta
 
-# ---------- Styling ----------
+# ---------- CSS Styling ----------
 if os.path.exists("style.css"):
     with open("style.css") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -17,7 +15,7 @@ if "logged_in" not in st.session_state:
 if "username" not in st.session_state:
     st.session_state.username = ""
 
-# ---------- File Helper Functions ----------
+# ---------- Helper Functions ----------
 def get_user_file(username):
     return f"data_{username}.csv"
 
@@ -29,7 +27,8 @@ def load_data(username):
     return pd.read_csv(file)
 
 def save_data(username, amount, category, date, type_):
-    new_data = pd.DataFrame([[amount, category, str(date), type_]], columns=['amount', 'category', 'date', 'type'])
+    new_data = pd.DataFrame([[amount, category, str(date), type_]],
+                            columns=['amount', 'category', 'date', 'type'])
     df = load_data(username)
     df = pd.concat([df, new_data], ignore_index=True)
     df.to_csv(get_user_file(username), index=False)
@@ -37,7 +36,6 @@ def save_data(username, amount, category, date, type_):
 def filter_data(df, period):
     df['date'] = pd.to_datetime(df['date'])
     today = datetime.today()
-    
     if period == "This Week":
         start = today - timedelta(days=today.weekday())
         end = start + timedelta(days=6)
@@ -47,7 +45,7 @@ def filter_data(df, period):
     else:
         return df
 
-# ---------- Login ----------
+# ---------- Login Section ----------
 def login_section():
     st.title("🔐 Login to Personal Finance Tracker")
     with st.form("login_form"):
@@ -71,6 +69,7 @@ def finance_app():
         st.session_state.username = ""
         st.rerun()
 
+    # Sidebar Menu and Filter
     menu = st.sidebar.selectbox("Select Option", [
         "Add Income", "Add Expense", "View Summary", "View Transactions", "Category Report"
     ])
@@ -119,16 +118,16 @@ def finance_app():
         st.subheader("📜 View Transactions")
         st.dataframe(filtered_df)
 
-    # Category Report
+    # Category Report with bar_chart (deployment-ready)
     elif menu == "Category Report":
         st.subheader("📉 Expense Category Report")
         expense_df = filtered_df[filtered_df["type"] == "Expense"]
         if not expense_df.empty:
-            category_data = expense_df.groupby("category")["amount"].sum().reset_index()
-            fig = px.pie(category_data, values="amount", names="category", title="Spending by Category")
-            st.plotly_chart(fig)
+            category_data = expense_df.groupby("category")["amount"].sum()
+            st.write("💡 Expense amount by category:")
+            st.bar_chart(category_data)
         else:
-            st.info("No expense data available to show pie chart.")
+            st.info("No expense data available to show chart.")
 
 # ---------- App Entry ----------
 if not st.session_state.logged_in:
