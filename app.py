@@ -84,7 +84,7 @@ def finance_app():
         st.subheader("➕ Add Income")
         with st.form("income_form"):
             amount = st.number_input("Enter amount", min_value=0.0, format="%.2f")
-            category = st.selectbox("Category", ["Salary", "Bonus", "Investment", "Other"])
+            category = st.selectbox("Category", ["Salary", "Bonus", "Extra Income", "Other"])
             date = st.date_input("Date")
             submitted = st.form_submit_button("Save Income")
             if submitted and amount > 0:
@@ -96,7 +96,7 @@ def finance_app():
         st.subheader("➖ Add Expense")
         with st.form("expense_form"):
             amount = st.number_input("Enter amount", min_value=0.0, format="%.2f")
-            category = st.selectbox("Category", ["Food", "Rent", "Utilities", "Shopping", "Other"])
+            category = st.selectbox("Category", ["Food", "Rent", "Utilities","Invesment" ,"Shopping", "Other"])
             date = st.date_input("Date")
             submitted = st.form_submit_button("Save Expense")
             if submitted and amount > 0:
